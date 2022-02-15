@@ -10,17 +10,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddOpenApiDocument();
 
-builder.Services
-    .AddMiniProfiler(options =>
-    {
-        options.RouteBasePath = "/profiler";
-
-        if (options.Storage is MemoryCacheStorage storage)
-        {
-            storage.CacheDuration = TimeSpan.FromMinutes(60);
-        }
-    })
-    .AddEntityFramework();
+builder.Services.AddMiniProfiler().AddEntityFramework();
 
 builder.Services
     .AddDbContext<BloggingContext>(x =>
@@ -39,6 +29,8 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+app.UseCors(builder => builder.WithOrigins("https://localhost:44494").AllowAnyHeader());
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
